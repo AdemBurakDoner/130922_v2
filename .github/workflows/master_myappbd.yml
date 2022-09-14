@@ -23,7 +23,7 @@ jobs:
 
       - name: npm install
         run: |
-          npm install
+          npm installg
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

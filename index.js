@@ -5,6 +5,35 @@ const _ = require('lodash')
 const app = express()
 app.use(bodyParser.json())
 
+const appIns = require('applicationinsights')
+appIns.setup()
+.setSendLiveMetrics(true)
+.start()
+
+app.get('/api/exception', async (req, res) => {
+
+    const telemetry = appIns.defaultClient
+    telemetry.trackException({
+        exception: new Error('Bir önemli exception oluştu')
+    })
+
+    res.send('exception tracked')
+})
+
+app.get('/api/event', async (req, res) => {
+
+    const telemetry = appIns.defaultClient
+    telemetry.trackEvent({
+        name: 'Önemli bir olay oluştu!',
+        properties: {
+            signinCount: 100,
+            orderCount: 1000
+        }
+    })
+
+    res.send('event tracked')
+})
+
 app.get('/api/hello', async (req, res) => {
 
     res.send('Hello World')
